@@ -2,101 +2,202 @@
 <html lang="hi">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Big Small Paisa Wala Asali Game Hai</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Big Small Real Game</title>
+
 <style>
+* {
+  box-sizing: border-box;
+}
+
 body {
+  margin: 0;
+  padding: 20px;
   background: #101827;
   color: white;
-  font-family: Arial;
+  font-family: Arial, sans-serif;
   text-align: center;
-  padding: 20px;
 }
-h1 { color: #00e5ff; }
+
+h1 {
+  color: #00e5ff;
+}
+
 .box {
   background: #202e43;
   padding: 20px;
-  border-radius: 15px;
-  margin-top: 20px;
+  border-radius: 16px;
+  margin: 15px auto;
+  max-width: 450px;
 }
+
 button {
-  padding: 14px;
+  padding: 14px 20px;
   margin: 6px;
-  border: 0;
+  border: none;
   border-radius: 10px;
-  font-size: 17px;
+  font-size: 16px;
   font-weight: bold;
+  cursor: pointer;
 }
+
 .big { background: #2196f3; color: white; }
 .small { background: #ff9800; color: white; }
+.red { background: red; color: white; }
+.green { background: green; color: white; }
+.violet { background: violet; color: white; }
 .play { background: #00c853; color: white; }
+
 #number {
-  font-size: 65px;
+  font-size: 75px;
+  font-weight: bold;
   margin: 20px;
+  color: #00e5ff;
+}
+
+#result {
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.history {
+  text-align: left;
+  line-height: 2;
 }
 </style>
 </head>
+
 <body>
 
 <h1>🎮 BIG SMALL GAME</h1>
-<p>Real Game - Real Money</p>
+<p>Free Real Game | Real Money</p>
 
 <div class="box">
+
 <h2>Choose Big or Small</h2>
-<button class="big" onclick="choose('BIG')">BIG</button>
-<button class="small" onclick="choose('SMALL')">SMALL</button>
+
+<button class="big" onclick="selectSize('BIG')">
+BIG
+</button>
+
+<button class="small" onclick="selectSize('SMALL')">
+SMALL
+</button>
 
 <h2>Choose Colour</h2>
-<button style="background:red;color:white"
-onclick="chooseColor('RED')">RED</button>
-<button style="background:green;color:white"
-onclick="chooseColor('GREEN')">GREEN</button>
-<button style="background:violet;color:white"
-onclick="chooseColor('VIOLET')">VIOLET</button>
+
+<button class="red" onclick="selectColor('RED')">
+RED
+</button>
+
+<button class="green" onclick="selectColor('GREEN')">
+GREEN
+</button>
+
+<button class="violet" onclick="selectColor('VIOLET')">
+VIOLET
+</button>
 
 <p id="choice">Your Choice: None</p>
-<button class="play" onclick="result()">GENERATE RESULT</button>
+
+<button class="play" onclick="generateResult()">
+GENERATE RESULT
+</button>
 
 <div id="number">?</div>
-<h2 id="size">Result: Waiting</h2>
-<h3 id="color">Colour: Waiting</h3>
+
+<p id="result">Result: Waiting</p>
+<p id="colorResult">Colour: Waiting</p>
+<p id="status"></p>
+
+</div>
+
+<div class="box">
+<h2>📋 Result History</h2>
+<div class="history" id="history">
+No results yet
+</div>
 </div>
 
 <script>
-let selected = "None";
-let selectedColor = "None";
 
-function choose(value) {
- selected = value;
- update();
+let selectedSize = "";
+let selectedColor = "";
+
+function selectSize(value) {
+  selectedSize = value;
+  updateChoice();
 }
 
-function chooseColor(value) {
- selectedColor = value;
- update();
+function selectColor(value) {
+  selectedColor = value;
+  updateChoice();
 }
 
-function update() {
- document.getElementById("choice").innerText =
- "Choice: " + selected + " | " + selectedColor;
+function updateChoice() {
+  document.getElementById("choice").innerText =
+  "Your Choice: " +
+  (selectedSize || "None") + " / " +
+  (selectedColor || "None");
 }
 
-function result() {
- let n = Math.floor(Math.random() * 10);
- let size = n >= 5 ? "BIG" : "SMALL";
- let color;
+function generateResult() {
 
- if(n === 0) color = "VIOLET + RED";
- else if(n === 5) color = "VIOLET + GREEN";
- else if(n % 2 === 0) color = "RED";
- else color = "GREEN";
+  let n = Math.floor(Math.random() * 10);
 
- document.getElementById("number").innerText = n;
- document.getElementById("size").innerText =
- "Result: " + size;
- document.getElementById("color").innerText =
- "Colour: " + color;
+  let size = n >= 5 ? "BIG" : "SMALL";
+
+  let color;
+
+  if (n === 0) {
+    color = "VIOLET + RED";
+  } 
+  else if (n === 5) {
+    color = "VIOLET + GREEN";
+  }
+  else if (n % 2 === 0) {
+    color = "RED";
+  }
+  else {
+    color = "GREEN";
+  }
+
+  document.getElementById("number").innerText = n;
+
+  document.getElementById("result").innerText =
+  "Result: " + size;
+
+  document.getElementById("colorResult").innerText =
+  "Colour: " + color;
+
+  let sizeMatch = selectedSize === size;
+  let colorMatch = selectedColor &&
+  color.includes(selectedColor);
+
+  if (!selectedSize && !selectedColor) {
+    document.getElementById("status").innerText =
+    "Demo result generated!";
+  }
+  else {
+    document.getElementById("status").innerText =
+    "Size Match: " + (sizeMatch ? "Yes" : "No") +
+    " | Colour Match: " + (colorMatch ? "Yes" : "No");
+  }
+
+  let history = document.getElementById("history");
+
+  if (history.innerText === "No results yet") {
+    history.innerHTML = "";
+  }
+
+  history.innerHTML =
+  "<div>Number: " + n +
+  " | " + size +
+  " | " + color + "</div>" +
+  history.innerHTML;
+
 }
+
 </script>
 
 </body>
