@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Big Small Rial Game Paisa Wala Game Hai</title>
+<style>
+body {
+  background: #101827;
+  color: white;
+  font-family: Arial;
+  text-align: center;
+  padding: 20px;
+}
+h1 { color: #00e5ff; }
+.box {
+  background: #202e43;
+  padding: 20px;
+  border-radius: 15px;
+  margin-top: 20px;
+}
+button {
+  padding: 14px;
+  margin: 6px;
+  border: 0;
+  border-radius: 10px;
+  font-size: 17px;
+  font-weight: bold;
+}
+.big { background: #2196f3; color: white; }
+.small { background: #ff9800; color: white; }
+.play { background: #00c853; color: white; }
+#number {
+  font-size: 65px;
+  margin: 20px;
+}
+</style>
+</head>
+<body>
+
+<h1>🎮 BIG SMALL GAME</h1>
+<p>Rial Game -  Real Money</p>
+
+<div class="box">
+<h2>Choose Big or Small</h2>
+<button class="big" onclick="choose('BIG')">BIG</button>
+<button class="small" onclick="choose('SMALL')">SMALL</button>
+
+<h2>Choose Colour</h2>
+<button style="background:red;color:white"
+onclick="chooseColor('RED')">RED</button>
+<button style="background:green;color:white"
+onclick="chooseColor('GREEN')">GREEN</button>
+<button style="background:violet;color:white"
+onclick="chooseColor('VIOLET')">VIOLET</button>
+
+<p id="choice">Your Choice: None</p>
+<button class="play" onclick="result()">GENERATE RESULT</button>
+
+<div id="number">?</div>
+<h2 id="size">Result: Waiting</h2>
+<h3 id="color">Colour: Waiting</h3>
+</div>
+
+<script>
+let selected = "None";
+let selectedColor = "None";
+
+function choose(value) {
+ selected = value;
+ update();
+}
+
+function chooseColor(value) {
+ selectedColor = value;
+ update();
+}
+
+function update() {
+ document.getElementById("choice").innerText =
+ "Choice: " + selected + " | " + selectedColor;
+}
+
+function result() {
+ let n = Math.floor(Math.random() * 10);
+ let size = n >= 5 ? "BIG" : "SMALL";
+ let color;
+
+ if(n === 0) color = "VIOLET + RED";
+ else if(n === 5) color = "VIOLET + GREEN";
+ else if(n % 2 === 0) color = "RED";
+ else color = "GREEN";
+
+ document.getElementById("number").innerText = n;
+ document.getElementById("size").innerText =
+ "Result: " + size;
+ document.getElementById("color").innerText =
+ "Colour: " + color;
+}
+</script>
+
+</body>
+</html>
